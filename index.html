@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,7 +23,7 @@
     .ticker {
       display: inline-block;
       padding-left: 100%;
-      animation: ticker 25s linear infinite;
+      animation: ticker-scroll 30s linear infinite;
     }
 
     .ticker:hover {
@@ -37,14 +36,14 @@
       font-size: 1rem;
     }
 
-    @keyframes ticker {
+    @keyframes ticker-scroll {
       0% { transform: translateX(0); }
       100% { transform: translateX(-100%); }
     }
 
     @media (max-width: 600px) {
       .ticker-item {
-        font-size: 0.8rem;
+        font-size: 0.85rem;
         padding: 0 0.8rem;
       }
     }
@@ -53,52 +52,31 @@
 <body>
   <div class="ticker-wrapper">
     <div class="ticker" id="stock-ticker">
-      <div class="ticker-item">Loading...</div>
+      <div class="ticker-item">India: BSE Sensex</div>
+      <div class="ticker-item">India: Nifty 50</div>
+      <div class="ticker-item">UK: FTSE 100</div>
+      <div class="ticker-item">Germany: DAX 40</div>
+      <div class="ticker-item">France: CAC 40</div>
+      <div class="ticker-item">Spain: IBEX 35</div>
+      <div class="ticker-item">Italy: FTSE MIB</div>
+      <div class="ticker-item">Netherlands: AEX</div>
+      <div class="ticker-item">Switzerland: SMI</div>
+      <div class="ticker-item">Belgium: BEL 20</div>
+      <div class="ticker-item">Nordic Region: Nasdaq Nordic</div>
+
+      <!-- Duplicate for smooth loop -->
+      <div class="ticker-item">India: BSE Sensex</div>
+      <div class="ticker-item">India: Nifty 50</div>
+      <div class="ticker-item">UK: FTSE 100</div>
+      <div class="ticker-item">Germany: DAX 40</div>
+      <div class="ticker-item">France: CAC 40</div>
+      <div class="ticker-item">Spain: IBEX 35</div>
+      <div class="ticker-item">Italy: FTSE MIB</div>
+      <div class="ticker-item">Netherlands: AEX</div>
+      <div class="ticker-item">Switzerland: SMI</div>
+      <div class="ticker-item">Belgium: BEL 20</div>
+      <div class="ticker-item">Nordic Region: Nasdaq Nordic</div>
     </div>
   </div>
-
-  <script>
-    const alphaVantageKey = '0M94SGFF7X1ZSNL6';
-
-    const indices = {
-      'NIFTY 50': 'NIFTYBEES.BO',
-      'FTSE 100': 'ISF.L',
-      'DAX 40': 'DAXEX.DE',
-      'CAC 40': 'AC.MI',
-      'SMI': 'SMICHA.SW',
-      'AEX': 'IAEX.AS'
-    };
-
-    const tickerContainer = document.getElementById('stock-ticker');
-
-    async function fetchAlpha(symbol) {
-      const url = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${alphaVantageKey}`;
-      try {
-        const res = await fetch(url);
-        const data = await res.json();
-        const price = data['Global Quote']?.['05. price'];
-        return price ? parseFloat(price).toFixed(2) : 'N/A';
-      } catch (err) {
-        return 'N/A';
-      }
-    }
-
-    async function delay(ms) {
-      return new Promise(resolve => setTimeout(resolve, ms));
-    }
-
-    async function updateTicker() {
-      let content = '';
-      for (const [name, symbol] of Object.entries(indices)) {
-        const price = await fetchAlpha(symbol);
-        content += `<div class="ticker-item">${name}: ${price}</div>`;
-        await delay(15000); // 15 seconds between API calls
-      }
-
-      tickerContainer.innerHTML = content + content;
-    }
-
-    updateTicker();
-  </script>
 </body>
 </html>
